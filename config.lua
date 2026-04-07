@@ -1,3 +1,3 @@
 Wolfy = {}
 
-Wolfy.RepairKit = 'repairkit' -- Item name
+Wolfy.RepairKit = 'stone' -- Item name

@@ -1,7 +1,7 @@
 window.addEventListener('message',function (event) {
     let e = event.data
     const p = $('#progressbar')
-    const container = $('#container')
+    const container = $('.fullprogress')
 
     if (e.type === 'startProgressBar') {
         container.fadeIn(500).css('display','flex')
@@ -18,8 +18,7 @@ window.addEventListener('message',function (event) {
         })
     }
 
-    if (e.type === 'stopProgressBar') {
-        p.stop()
+    if (e.type === 'hideProgressBar') {
         container.fadeOut(500)
     }
 })

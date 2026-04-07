@@ -9,18 +9,22 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body class="h-screen w-screen flex flex-col justify-end items-center">
-    <div id="container"
-        class="relative bg-gray-900 w-[40%] h-[5%] mb-[7%] rounded-lg overflow-hidden border border-white/10 shadow-2xl">
+<body>
+    <div class="fullprogress h-screen w-screen flex-col hidden justify-end items-center">
 
-        <div id="progressbar"
-            class="absolute top-0 left-0 h-full bg-gradient-to-tr to-slate-900 from-blue-800 border-r-[0.1vw] border-white transition-all duration-200 w-[70%]">
+        <div id="container"
+            class="relative bg-black w-[40%] h-[5%] mb-[7%] rounded-lg overflow-hidden border border-white/10 shadow-2xl">
+
+            <div id="progressbar"
+                class="absolute top-0 left-0 h-full bg-gradient-to-tr to-slate-900 from-blue-800 border-r-[0.1vw]border-white w-[70%]">
+            </div>
+
+            <h1 id="text"
+                class="relative z-10 text-white text-[3vh] font-bold uppercase h-full w-full flex justify-center items-center font-sans ">
+                javitás...
+            </h1>
+
         </div>
-
-        <h1 id="text"class="relative z-10 text-white text-[3vh] font-bold uppercase h-full w-full flex justify-center items-center font-sans ">
-            javitás...
-        </h1>
-
     </div>
 
     <script src="app.js"></script>

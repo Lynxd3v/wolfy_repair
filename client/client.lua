@@ -2,7 +2,7 @@ ESX = exports.es_extended:getSharedObject()
 local IsReparing = false
 local StopReparing = false
 
-local function StartRepairing(dict, name,vehicle)
+local function StartRepairing(dict, name, vehicle)
     local ped = PlayerPedId()
     local time = 60 -- 1 minute
     if not HasAnimDictLoaded(dict) then
@@ -11,10 +11,51 @@ local function StartRepairing(dict, name,vehicle)
             Wait(10)
         end
     end
-    IsReparing = true
+
     StopReparing = false
+    IsReparing = true
+
+    local min, max = GetModelDimensions(GetEntityModel(vehicle))
+    local coords = GetOffsetFromEntityInWorldCoords(vehicle, 0.0, max.y + 0.2, 0.0)
+    FreezeEntityPosition(vehicle, true)
+
+    TaskGoStraightToCoord(ped, coords.x, coords.y, coords.z, 1.0, 5000, GetEntityHeading(vehicle) - 180.0, 0.2)
+
+    Wait(200)
+
+    while true do
+        local pCoords = GetEntityCoords(PlayerPedId())
+        local vehCoords = vector3(coords.x, coords.y, coords.z)
+        local distance = #(pCoords - vehCoords)
+
+        ESX.ShowNotification('' .. distance .. '')
+
+        if distance < 0.65 then
+            ESX.ShowNotification('asd')
+            ClearPedTasks(ped)
+            break
+        end
+
+        if StopReparing then
+            ClearPedTasks(ped)
+            return
+        end
+        Wait(100)
+    end
+
+
+    SetEntityCoords(ped, coords.x, coords.y, coords.z - 1.0, false, false, false, true)
+    SetEntityHeading(ped, GetEntityHeading(vehicle))
+
+    SendNUIMessage({
+        type = 'startProgressBar',
+        duration = 61000
+    })
+
     TaskPlayAnim(ped, dict, name, 8.0, 1.0, -1, 1, 1.0, false, false, false)
 
+    SetEntityHeading(ped, GetEntityHeading(vehicle))
+    TaskPlayAnim(ped, dict, name, 8.0, 1.0, -1, 1, 1.0, false, false, false)
 
     while time > 0 do
         if StopReparing then
@@ -32,10 +73,9 @@ local function StartRepairing(dict, name,vehicle)
     if DoesEntityExist(vehicle) then
         local Fuellevel = GetVehicleFuelLevel(vehicle)
         SetVehicleFixed(vehicle)
-        SetVehicleFuelLevel(vehicle,Fuellevel)
+        SetVehicleFuelLevel(vehicle, Fuellevel)
         TriggerServerEvent('wolfy_repair:EndReparing')
     end
-
 end
 
 CreateThread(function()
@@ -44,11 +84,11 @@ CreateThread(function()
         if IsReparing then
             sleep = 0
 
-            if IsControlJustPressed(0,73) then
+            if IsControlJustPressed(0, 73) then
                 StopReparing = true
                 ClearPedTasks(PlayerPedId())
                 SendNUIMessage({
-                    type = 'stopProgressBar'
+                    type = 'hideProgressBar'
                 })
             end
 
@@ -75,22 +115,23 @@ CreateThread(function()
         name = 'wolfy_repair:Repairoptions',
         icon = "fa-solid fa-toolbox",
         distance = 2.5,
-        bones = { 'bonnet' },
-        canInteract = function(entity, distance, coords, name, bone)
+        canInteract = function()
             return not IsReparing
         end,
         onSelect = function(data)
             ESX.TriggerServerCallback('wolfy_repair:HaveaRepairkit', function(Have)
                 if Have then
-                    StartRepairing("amb@world_human_vehicle_mechanic@male@base", "base",data.entity)
-                    SendNUIMessage({
-                        type = 'startProgressBar',
-                        duration = 60000
-                    })
+                    StartRepairing("amb@world_human_vehicle_mechanic@male@base", "base", data.entity)
                 else
                     ESX.ShowNotification('Nincsen nálad javító készlet', 5000, 'info')
                 end
             end)
         end
     })
+end)
+
+RegisterNetEvent('onResourceStop', function(resourceName)
+    if GetCurrentResourceName() ~= resourceName then return end
+
+    ClearPedTasks(PlayerPedId())
 end)

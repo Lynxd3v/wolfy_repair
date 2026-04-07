@@ -550,7 +550,7 @@ video {
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
-[hidden]:where(:not([hidden="until-found"])) {
+.hidden {
   display: none;
 }
 
@@ -690,10 +690,6 @@ video {
 
 .h-10 {
   height: 2.5rem;
-}
-
-.h-\[\] {
-  height: ;
 }
 
 .h-\[8\%\] {
