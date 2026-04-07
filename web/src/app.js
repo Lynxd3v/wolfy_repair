@@ -19,6 +19,7 @@ window.addEventListener('message',function (event) {
     }
 
     if (e.type === 'hideProgressBar') {
+        p.stop()
         container.fadeOut(500)
     }
 })
