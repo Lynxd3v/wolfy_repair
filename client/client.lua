@@ -28,10 +28,7 @@ local function StartRepairing(dict, name, vehicle)
         local vehCoords = vector3(coords.x, coords.y, coords.z)
         local distance = #(pCoords - vehCoords)
 
-        ESX.ShowNotification('' .. distance .. '')
-
         if distance < 0.65 then
-            ESX.ShowNotification('asd')
             ClearPedTasks(ped)
             break
         end
