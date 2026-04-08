@@ -17,7 +17,6 @@ local function StartRepairing(dict, name, vehicle)
 
     local min, max = GetModelDimensions(GetEntityModel(vehicle))
     local coords = GetOffsetFromEntityInWorldCoords(vehicle, 0.0, max.y + 0.2, 0.0)
-    FreezeEntityPosition(vehicle, true)
 
     TaskGoStraightToCoord(ped, coords.x, coords.y, coords.z, 1.0, 5000, GetEntityHeading(vehicle) - 180.0, 0.2)
 
@@ -40,6 +39,7 @@ local function StartRepairing(dict, name, vehicle)
         Wait(100)
     end
 
+    FreezeEntityPosition(vehicle, true)
 
     SetEntityCoords(ped, coords.x, coords.y, coords.z - 1.0, false, false, false, true)
     SetEntityHeading(ped, GetEntityHeading(vehicle))
@@ -56,6 +56,7 @@ local function StartRepairing(dict, name, vehicle)
 
     while time > 0 do
         if StopReparing then
+            FreezeEntityPosition(vehicle,false)
             IsReparing = false
             return
         else
@@ -66,6 +67,7 @@ local function StartRepairing(dict, name, vehicle)
 
     IsReparing = false
     ClearPedTasks(ped)
+    FreezeEntityPosition(vehicle,false)
 
     if DoesEntityExist(vehicle) then
         local Fuellevel = GetVehicleFuelLevel(vehicle)
