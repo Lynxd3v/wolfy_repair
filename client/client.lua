@@ -27,7 +27,7 @@ local function StartRepairing(dict, name, vehicle)
         local vehCoords = vector3(coords.x, coords.y, coords.z)
         local distance = #(pCoords - vehCoords)
 
-        if distance < 0.65 then
+        if distance < 1.0 then
             ClearPedTasks(ped)
             break
         end
