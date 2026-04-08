@@ -85,6 +85,7 @@ CreateThread(function()
 
             if IsControlJustPressed(0, 73) then
                 StopReparing = true
+                IsReparing = false
                 ClearPedTasks(PlayerPedId())
                 SendNUIMessage({
                     type = 'hideProgressBar'
