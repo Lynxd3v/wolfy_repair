@@ -115,6 +115,7 @@ CreateThread(function()
         name = 'wolfy_repair:Repairoptions',
         icon = "fa-solid fa-toolbox",
         distance = 2.5,
+        items = Wolfy.RepairKit,
         canInteract = function()
             return not IsReparing
         end,
